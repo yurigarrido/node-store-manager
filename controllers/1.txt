@@ -1,0 +1,2 @@
+- logica web
+-chama o service e passa as infos por parametro
