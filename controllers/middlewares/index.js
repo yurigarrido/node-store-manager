@@ -1,9 +1,8 @@
 const joiError = require('./joi-error');
-// const domainError = require('./domain-error');
-// const error = require('./error');
+const { validateName, validateQuantity} = require('./validateProducts');
 
 module.exports = {
   joiError,
-  // domainError,
-  // error,
+  validateName,
+  validateQuantity,
 };
