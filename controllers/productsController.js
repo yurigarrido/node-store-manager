@@ -15,10 +15,13 @@ const router = express.Router();
 
 router.post(
   '/', rescue(async (req, res) => {
-    const { name, quantity } = req.body;
-    const response = await productsService.addProduct(name, quantity);
-
-    res.status(200).json(response);
+    try {
+      const { name, quantity } = req.body;
+      const response = await productsService.addProduct(name, quantity);
+      return res.status(201).json(response);
+    } catch (err) {
+      console.log(err.message);
+    }
   }),
 );
 
