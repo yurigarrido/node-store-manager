@@ -1,13 +1,16 @@
 const { connection } = require('./connection');
 
 const getAllProducts = async () => {
-  const [result] = await connection.execute('SELECT * FROM products');
+  const conn = await connection;
+  const [result] = await conn.execute('SELECT * FROM products');
 
   return result;
 };
 
 const add = async (name, quantity) => {
-  const [result] = await connection.execute(
+  const conn = await connection;
+
+  const [result] = await conn.execute(
 'INSERT INTO products (name, quantity) VALUES (?, ?)',
 [name, quantity],
 );
