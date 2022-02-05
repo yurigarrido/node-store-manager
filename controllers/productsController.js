@@ -3,6 +3,7 @@ const rescue = require('express-rescue');
 
 const productsService = require('../services/productsService');
 // const joi = require('joi');
+const middlewares = require('./middlewares');
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ const router = express.Router();
  */
 
 router.post(
-  '/', rescue(async (req, res) => {
+  '/', middlewares.validateName, middlewares.validateQuantity, rescue(async (req, res) => {
     try {
       const { name, quantity } = req.body;
       const response = await productsService.addProduct(name, quantity);
@@ -24,5 +25,27 @@ router.post(
     }
   }),
 );
+
+// allproducts
+router.get('/', rescue(async (_req, res) => {
+  try {
+    const response = await productsService.allProducts();
+    return res.status(200).json(response);
+  } catch (err) {
+    console.log(err.message);
+  }
+}));
+
+// produto com o id
+router.get('/:id', rescue(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await productsService.oneProduct(id);
+    if (response.length === 0) return res.status(404).json({ message: 'Product not found' });
+    return res.status(200).json(response[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+}));
 
 module.exports = router;
