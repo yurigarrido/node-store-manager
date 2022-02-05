@@ -18,8 +18,15 @@ const oneProduct = async (id) => {
   return response;
 };
 
+const updateProduct = async (name, quantity, id) => {
+  const response = await productsModel.updateProduct(name, quantity, id);
+  console.log(response);
+  return response;
+};
+
 module.exports = {
   addProduct,
   allProducts,
   oneProduct,
+  updateProduct,
 };
