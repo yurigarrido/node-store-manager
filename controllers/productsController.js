@@ -49,15 +49,35 @@ router.get('/:id', rescue(async (req, res) => {
 }));
 
 // aletra produto com o id
-router.put('/:id', middlewares.validateQuantity, middlewares.validateName, middlewares.validateExistence, rescue(async (req, res) => {
-  try {
-    const { name, quantity } = req.body;
-    const { id } = req.params;
-    const response = await productsService.updateProduct(name, quantity, id);
-    return res.status(200).json(response);
-  } catch (err) {
-    console.log(err.message);
-  }
-}));
+router.put(
+  '/:id',
+  middlewares.validateQuantity,
+  middlewares.validateName,
+  middlewares.validateExistence,
+  rescue(async (req, res) => {
+    try {
+      const { name, quantity } = req.body;
+      const { id } = req.params;
+      const response = await productsService.updateProduct(name, quantity, id);
+      return res.status(200).json(response);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }),
+);
+
+router.delete(
+  '/:id', 
+  middlewares.validateExistence,
+  rescue(async (req, res) => {
+    try {
+      const { id } = req.params;
+      const response = await productsService.deleteProduct(id);
+      return res.status(200).json(response);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }),
+);
 
 module.exports = router;
