@@ -1,4 +1,4 @@
-const { connection } = require('./connection');
+const connection = require('./connection');
 
 const getOneProduct = async (id) => {
   const [result] = await connection.execute('SELECT * FROM products WHERE id = ?', [id]);

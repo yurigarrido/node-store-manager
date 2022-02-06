@@ -2,16 +2,17 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-// const joi = require('joi');
 
 const app = express();
 
 app.use(bodyParser.json());
 
 const productsController = require('./controllers/productsController');
+const salesController = require('./controllers/salesController');
 
   /* Todas as rotas com /recipes/<alguma-coisa> entram aqui e vão para o roteador. */
 app.use('/products', productsController);
+app.use('/sales', salesController);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
