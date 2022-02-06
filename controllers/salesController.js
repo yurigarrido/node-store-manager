@@ -21,4 +21,29 @@ router.post(
   }),
 );
 
+router.get(
+  '/:id',
+  rescue(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const response = await salesService.getOneSale(id);
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+  }
+  }),
+);
+
+router.get(
+  '/',
+  rescue(async (req, res) => {
+  try {
+    const response = await salesService.getAllSales();
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+  }
+  }),
+);
+
 module.exports = router;
