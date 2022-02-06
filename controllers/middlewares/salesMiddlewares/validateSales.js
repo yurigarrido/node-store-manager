@@ -1,4 +1,4 @@
-const salesModel = require('../../../models/salesModel');
+// const salesModel = require('../../../models/salesModel');
 
 const validateId = async (req, res, next) => {
   const salesList = req.body;

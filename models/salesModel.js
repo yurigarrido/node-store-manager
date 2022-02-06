@@ -5,12 +5,14 @@ const registerSale = async (products) => {
     'INSERT INTO sales (date) VALUES (now())',
   );
 
-  await products.forEach(({ product_id: productId, quantity }) => {
-    connection.execute(
-      'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
-      [sale.insertId, productId, quantity],
-    );
+  const bigInsert = await products.map(async ({ product_id: productId, quantity }) => {
+    console.log(sale.insertId, productId, quantity);
+    // await connection.execute(
+    //   'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+    //   [sale.insertId, productId, quantity],
+    // );
   });
+  Promise.all(bigInsert);
 
   return {
     id: sale.insertId,
