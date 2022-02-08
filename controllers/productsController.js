@@ -2,7 +2,7 @@ const express = require('express');
 const rescue = require('express-rescue');
 
 const productsService = require('../services/productsService');
-const middlewares = require('./middlewares');
+const productsMiddlewares = require('./middlewares/productsMiddlewares/validateProducts');
 
 const router = express.Router();
 
@@ -14,10 +14,13 @@ const router = express.Router();
  */
 
 router.post(
-  '/', middlewares.validateName, middlewares.validateQuantity, rescue(async (req, res) => {
+  '/', 
+  productsMiddlewares.validateName,
+  productsMiddlewares.validateQuantity, 
+  rescue(async (req, res) => {
     try {
       const { name, quantity } = req.body;
-      const response = await productsService.addProduct(name, quantity);
+      const response = await productsService.register(name, quantity);
       return res.status(201).json(response);
     } catch (err) {
       console.log(err.message);
@@ -25,21 +28,19 @@ router.post(
   }),
 );
 
-// allproducts
 router.get('/', rescue(async (_req, res) => {
   try {
-    const response = await productsService.allProducts();
+    const response = await productsService.getAll();
     return res.status(200).json(response);
   } catch (err) {
     console.log(err.message);
   }
 }));
 
-// produto com o id
 router.get('/:id', rescue(async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await productsService.oneProduct(id);
+    const response = await productsService.getById(id);
     if (response.length === 0) return res.status(404).json({ message: 'Product not found' });
     return res.status(200).json(response[0]);
   } catch (err) {
@@ -47,17 +48,16 @@ router.get('/:id', rescue(async (req, res) => {
   }
 }));
 
-// aletra produto com o id
 router.put(
   '/:id',
-  middlewares.validateQuantity,
-  middlewares.validateName,
-  middlewares.validateExistence,
+  productsMiddlewares.validateQuantity,
+  productsMiddlewares.validateName,
+  productsMiddlewares.validateExistence,
   rescue(async (req, res) => {
     try {
       const { name, quantity } = req.body;
       const { id } = req.params;
-      const response = await productsService.updateProduct(name, quantity, id);
+      const response = await productsService.update(name, quantity, id);
       return res.status(200).json(response);
     } catch (err) {
       console.log(err.message);
@@ -67,11 +67,11 @@ router.put(
 
 router.delete(
   '/:id', 
-  middlewares.validateExistence,
+  productsMiddlewares.validateExistence,
   rescue(async (req, res) => {
     try {
       const { id } = req.params;
-      const response = await productsService.deleteProduct(id);
+      const response = await productsService.remove(id);
       return res.status(200).json(response);
     } catch (err) {
       console.log(err.message);

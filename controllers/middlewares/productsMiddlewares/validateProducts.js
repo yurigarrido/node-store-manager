@@ -3,7 +3,7 @@ const productsModel = require('../../../models/productsModel');
 const validateName = async (req, res, next) => {
   const { name } = req.body;
 
-  const allProducts = await productsModel.getAllProducts();
+  const allProducts = await productsModel.getAll();
   const isUnique = allProducts.find((item) => item.name === name);
 
   if (!name) {
@@ -39,7 +39,7 @@ const validateQuantity = (req, res, next) => {
 const validateExistence = async (req, res, next) => {
   const { id } = req.params;
 
-  const exists = await productsModel.getOneProduct(id);
+  const exists = await productsModel.getById(id);
   if (exists.length === 0) return res.status(404).json({ message: 'Product not found' });
 
   next();

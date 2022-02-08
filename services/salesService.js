@@ -1,22 +1,27 @@
-const salesModel = require('../models/salesModel');
+const saleModel = require('../models/salesModel');
 
-const registerSale = async (products) => {
-  const response = await salesModel.registerSale(products);
-  return response;
-};
+const register = async (sales) => (saleModel.register(sales));
 
-const getAllSales = async () => {
-  const response = await salesModel.getAllSales();
-  return response;
-};
+const getAll = async () => (saleModel.getAll());
 
-const getOneSale = async (id) => {
-  const response = await salesModel.getOneSale(id);
+const getById = async (id) => (saleModel.getById(id));
+
+const update = async (id, sale) => (saleModel.update(id, sale));
+
+const remove = async (id) => {
+  const response = getById(id);
+
+  if (response.length === 0) return null;
+
+  saleModel.remove(id);
+
   return response;
 };
 
 module.exports = {
-  registerSale,
-  getAllSales,
-  getOneSale,
+  register,
+  getAll,
+  getById,
+  update,
+  remove,
 };

@@ -1,39 +1,25 @@
 const productsModel = require('../models/productsModel');
 
-const addProduct = async (name, quantity) => {
-  const response = await productsModel.add(name, quantity);
+const register = async (name, quantity) => productsModel.register(name, quantity);
 
-  // mid?
+const getAll = async () => productsModel.getAll();
 
-  return response;
-};
+const getById = async (id) => productsModel.getById(id);
 
-const allProducts = async () => {
-  const response = await productsModel.getAllProducts();
-  return response;
-};
+const update = async (name, quantity, id) => productsModel.update(name, quantity, id);
 
-const oneProduct = async (id) => {
-  const response = await productsModel.getOneProduct(id);
-  return response;
-};
+const remove = async (id) => {
+  const response = await productsModel.getById(id);
 
-const updateProduct = async (name, quantity, id) => {
-  const response = await productsModel.updateProduct(name, quantity, id);
-  console.log(response);
-  return response;
-};
-
-const deleteProduct = async (id) => {
-  const response = await productsModel.getOneProduct(id);
   await productsModel.deleteProduct(id);
+
   return response[0];
 };
 
 module.exports = {
-  addProduct,
-  allProducts,
-  oneProduct,
-  updateProduct,
-  deleteProduct,
+  register,
+  getAll,
+  getById,
+  update,
+  remove,
 };
