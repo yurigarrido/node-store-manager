@@ -41,7 +41,7 @@ const validateSales = (req, res, next) => {
 const validateExistsId = async (req, res, next) => {
   const { id } = req.params;
   const row = await saleService.getById(id);
-
+  console.log(id);
   if (row.length === 0) return res.status(404).json({ message: 'Sale not found' });
 
   next();
