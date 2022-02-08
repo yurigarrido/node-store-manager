@@ -32,11 +32,9 @@ router.get('/', rescue(async (req, res) => {
 
 router.get('/:id', 
   // verifica se a venda exist
-  // verifica se o produto da 
-rescue(async (req, res) => {
-  console.log(req.params.id);
+  salesMiddleware.validateExistsId,
+  rescue(async (req, res) => {
   const response = await saleService.getById(req.params.id);
-  console.log(response);
   if (response.length === 0) return res.status(404).json({ message: 'Sale not found' });
 
   return res.status(200).json(response);
