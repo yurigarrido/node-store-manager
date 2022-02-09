@@ -32,17 +32,28 @@ const getAll = async () => {
   return rows;
 };
 
-const getById = async (id) => {
-  const [row] = await connection.execute(
-    `SELECT s.date, sp.product_id, sp.quantity
-    FROM sales s 
-    JOIN sales_products sp 
-    ON s.id = sp.sale_id
-    WHERE s.id = ?`,
-    [id],
-  );
+// const getById = async (id) => {
+//   const [row] = await connection.execute(
+//     `SELECT s.date, sp.product_id, sp.quantity
+//     FROM sales s 
+//     JOIN sales_products sp 
+//     ON s.id = sp.sale_id
+//     WHERE s.id = ?`,
+//     [id],
+//   );
 
-  return row;
+//   return row;
+// };
+
+const getById = async (id) => {
+  const [result] = await connection
+    .query(`SELECT S.date, SP.product_id, SP.quantity
+     FROM sales_products AS SP
+    INNER JOIN StoreManager.sales AS S
+    ON SP.sale_id = S.id
+    WHERE S.id =?;`, [id]);
+    if (!result) return null;
+    return result;
 };
 
 const update = async (id, sale) => {
