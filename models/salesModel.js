@@ -56,6 +56,8 @@ const getById = async (id) => {
     return result;
 };
 
+// seje dev que é fassil
+
 const update = async (id, sale) => {
   await connection.execute(
     `UPDATE sales_products
