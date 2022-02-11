@@ -34,8 +34,7 @@ const stockValid = async (req, res, next) => {
   allProducts.forEach((product) => {
     const info = data.filter((item) => item.id === product.product_id);
       if (info[0].quantity < product.quantity) {
-      //  return res.status(422).json({ message: 'Such amount is not permitted to sell' });
-      console.log('deu ruim');
+       return res.status(422).json({ message: 'Such amount is not permitted to sell' });
       }
   });
   
