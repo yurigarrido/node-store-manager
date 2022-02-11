@@ -1,3 +1,0 @@
-- recebe uma chamada do controlle, procura com a função da model e guarda
-
--desconhece requisição

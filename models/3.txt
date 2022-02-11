@@ -1,2 +1,0 @@
-- fala com o banco de dados
-- faz a requisição no banco e retorna o resultado
