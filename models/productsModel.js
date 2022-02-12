@@ -11,13 +11,11 @@ const getAll = async () => {
   return result;
 };
 
-// função sendo testada
 const register = async (name, quantity) => {
   const [result] = await connection.execute(
 'INSERT INTO products (name, quantity) VALUES (?, ?)',
 [name, quantity],
 );
-
   return { id: result.insertId, name, quantity };
 };
 
@@ -33,9 +31,10 @@ const update = async (name, quantity, id) => {
 };
 
 const deleteProduct = async (id) => {
-   await connection.execute(
-  'DELETE FROM products WHERE id = ?', [id],
-  );
+    await connection.execute(
+     'DELETE FROM products WHERE id = ?', [id],
+     );
+    return { message: 'Product deleted' };
 };
 
 module.exports = {
