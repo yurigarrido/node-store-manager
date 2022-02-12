@@ -11,11 +11,13 @@ const getAll = async () => {
   return result;
 };
 
+// função sendo testada
 const register = async (name, quantity) => {
   const [result] = await connection.execute(
 'INSERT INTO products (name, quantity) VALUES (?, ?)',
 [name, quantity],
 );
+
   return { id: result.insertId, name, quantity };
 };
 
