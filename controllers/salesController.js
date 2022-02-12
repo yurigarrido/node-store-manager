@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 const service = require('../services/salesService');
-const { validateUndefined, validateQuantity, stockValid } = require('../middlewares/validateSales');
+const { validateUndefined, validateQuantity /* stockValid */ } = require('../middlewares/validateSales');
 
-router.post('/', validateUndefined, validateQuantity, stockValid, async (req, res) => {
+router.post('/', validateUndefined, validateQuantity, /* stockValid */ async (req, res) => {
   const response = await service.createSale(req.body);
   return res.status(201).json(response);
 });
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 
   const response = await service.getById(id);
 
-  if (!response) {
+  if (response.length === 0) {
     return res.status(404).json({ message: 'Sale not found' });
   }
 
@@ -39,7 +39,7 @@ router.delete('/:id', async (req, res) => {
 
   const response = await service.deleteSale(id);
 
-  if (!response) return res.status(404).json({ message: 'Sale not found' });
+  if (response.length === 0) return res.status(404).json({ message: 'Sale not found' });
 
   res.status(200).json(response);
 });

@@ -1,6 +1,6 @@
 const connection = require('./connection');
 
-// create
+// função testada
 const createSale = async (values) => {
   const [id] = await connection.execute('INSERT INTO sales (date) VALUES (now())');
 
@@ -20,7 +20,7 @@ const createSale = async (values) => {
   };
 };
 
-// ready
+// função testada
 const getAllSales = async () => {
   const [result] = await connection.execute(
     `SELECT p.sale_id AS saleId, s.date, p.product_id, p.quantity
@@ -30,6 +30,7 @@ const getAllSales = async () => {
   return result;
 };
 
+// função testada - falta id inexistente
 const getById = async (id) => {
   const [result] = await connection.execute(
     `SELECT s.date, p.product_id, p.quantity 
@@ -37,7 +38,7 @@ const getById = async (id) => {
      [id],
   );
 
-  if (result.length === 0) return null;
+  // if (result.length === 0) return null;
 
   return result;
 };

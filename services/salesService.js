@@ -25,7 +25,6 @@ const updateById = async (id, body) => {
 const deleteSale = async (id) => {
   const sale = await model.getById(id);
   const response = await model.deleteById(id, sale);
-
   return response;
 };
 
