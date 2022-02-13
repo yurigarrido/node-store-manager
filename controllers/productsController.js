@@ -13,47 +13,34 @@ const service = require('../services/productsService');
  * D - DELETE
  */
 
-router.post(
-  '/', 
-  middleware.validateName,
-  middleware.validateQuantity, 
-  rescue(async (req, res) => {
-    try {
+const create = async (req, res, _next) => {
       const { name, quantity } = req.body;
       const response = await service.register(name, quantity);
-      return res.status(201).json(response);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }),
-);
+      return res.status(201).send(response);
+  };
 
-router.get('/', rescue(async (_req, res) => {
+const getAll = async (_req, res, _next) => {
   try {
     const response = await service.getAll();
     return res.status(200).json(response);
   } catch (err) {
     console.log(err.message);
   }
-}));
+};
 
-router.get('/:id', rescue(async (req, res) => {
+const getById = async (req, res, _next) => {
   try {
     const { id } = req.params;
     const response = await service.getById(id);
+    console.log(response.length);
     if (response.length === 0) return res.status(404).json({ message: 'Product not found' });
     return res.status(200).json(response[0]);
   } catch (err) {
     console.log(err.message);
   }
-}));
+};
 
-router.put(
-  '/:id',
-  middleware.validateQuantity,
-  middleware.validateName,
-  middleware.validateExistence,
-  rescue(async (req, res) => {
+const update = async (req, res, _next) => {
     try {
       const { name, quantity } = req.body;
       const { id } = req.params;
@@ -62,13 +49,9 @@ router.put(
     } catch (err) {
       console.log(err.message);
     }
-  }),
-);
+  };
 
-router.delete(
-  '/:id', 
-  middleware.validateExistence,
-  rescue(async (req, res) => {
+  const deleteProdcut = async (req, res, _next) => {
     try {
       const { id } = req.params;
       const response = await service.remove(id);
@@ -76,7 +59,12 @@ router.delete(
     } catch (err) {
       console.log(err.message);
     }
-  }),
-);
+  };
 
-module.exports = router;
+module.exports = {
+  create,
+  getAll,
+  getById,
+  update,
+  deleteProdcut,
+};
