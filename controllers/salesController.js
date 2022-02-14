@@ -17,6 +17,7 @@ const getAll = async (_req, res, _next) => {
   return res.status(200).json(response);
 };
 
+// função sendo testada
 const getById = async (req, res, _next) => {
   const { id } = req.params;
 

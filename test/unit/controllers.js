@@ -160,10 +160,24 @@ describe('Ao chamar o controller de remover produto', () => {
 // salesController -------------------------------------
 
 
-describe('Ao chamar o controller de criar venda', () => {
-  describe('quando é inserido com sucesso', async () => {
+describe('SALES', () => {
+  describe('quando encontra todas as vendas', async () => {
     const response = {};
     const request = {};
+    const mock = [
+      {
+        saleId: 1,
+        date: '2022-02-14T00:39:15.000Z',
+        product_id: 1,
+        quantity: 1
+      },
+      {
+        saleId: 1,
+        date: '2022-02-14T00:39:15.000Z',
+        product_id: 2,
+        quantity: 1
+      }
+    ]
 
     before(() => {
       request.body = {
@@ -172,23 +186,9 @@ describe('Ao chamar o controller de criar venda', () => {
       }
 
       response.status = sinon.stub().returns(response);
-      response.send = sinon.stub().returns();
+      response.json = sinon.stub().returns();
 
-
-      const mock = {
-        id: 1,
-        itemsSold: [
-          {
-            product_id: 1,
-            quantity: 2
-          },
-          {
-            product_id: 2,
-            quantity: 5
-          }
-        ]
-      } 
-      sinon.stub(salesService, 'getAll').resolves(true);
+      sinon.stub(salesService, 'getAll').resolves(mock);
     });
 
     after(() => {
@@ -196,9 +196,50 @@ describe('Ao chamar o controller de criar venda', () => {
     });
 
     it('é chamado o status com o código 201', async () => {
-      // await salesController.getAll(request, response)
-
-      // expect(response.send).to.be.equal('oi');
+       await salesController.getAll(request, response)
+      expect(response.status.calledWith(200)).to.be.equal(true);
     });
+    it('é chamado o status com o código 201', async () => {
+      await salesController.getAll(request, response)
+     expect(response.status.calledWith(200)).to.be.equal(true);
+   });
+  });
+
+  describe('getById', async () => {
+    const response = {};
+    const request = {};
+    const mock = {
+      saleId: 1,
+      itemUpdated: [
+        {
+          product_id: 1,
+          quantity: 6
+        }
+      ]
+    }    
+
+    before(() => {
+      request.params = {
+        id: 1,
+      }
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesService, 'getById').resolves(mock);
+    });
+
+    after(() => {
+      salesService.getById.restore();
+    });
+
+    it('é chamado o status com o código 201', async () => {
+       await salesController.getById(request, response)
+      expect(response.status.calledWith(200)).to.be.equal(true);
+    });
+    it('é chamado o status com o código 201', async () => {
+      await salesController.getById(request, response)
+     expect(response.status.calledWith(200)).to.be.equal(true);
+   });
   });
 });
