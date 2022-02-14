@@ -205,7 +205,207 @@ describe('SALES', () => {
    });
   });
 
-  describe('getById', async () => {
+    describe('quando da errado', async () => {
+      const response = {};
+      const request = {};
+      const mock = {
+        saleId: 1,
+        itemUpdated: [
+          {
+            product_id: 1,
+            quantity: 6
+          }
+        ]
+      }    
+  
+      before(() => {
+        request.params = {
+          id: 1,
+        }
+  
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(salesService, 'getById').resolves([]);
+      });
+  
+      after(() => {
+        salesService.getById.restore();
+      });
+  
+      it('é chamado o status com o código 201', async () => {
+         await salesController.getById(request, response)
+        expect(response.status.calledWith(404)).to.be.equal(true);
+      });
+      it('é chamado o status com o código 201', async () => {
+        await salesController.getById(request, response)
+       expect(response.status.calledWith(404)).to.be.equal(true);
+     });
+    })
+
+
+     describe('qaundo da certo', async () => {
+      const response = {};
+      const request = {};
+      const mock = {
+        saleId: 1,
+        itemUpdated: [
+          {
+            product_id: 1,
+            quantity: 6
+          }
+        ]
+      }    
+  
+      before(() => {
+        request.params = {
+          id: 1,
+        }
+  
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+  
+        sinon.stub(salesService, 'getById').resolves(mock);
+      });
+  
+      after(() => {
+        salesService.getById.restore();
+      });
+  
+      it('é chamado o status com o código 201', async () => {
+         await salesController.getById(request, response)
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      });
+      it('é chamado o status com o código 201', async () => {
+        await salesController.getById(request, response)
+       expect(response.status.calledWith(200)).to.be.equal(true);
+     });
+  });
+
+  describe('deleteById', async () => {
+    const response = {};
+    const request = {};
+    const mock =   [
+      { 
+        date: '2021-09-09T04:54:29.000Z',
+        product_id: 1,
+        quantity: 2
+      },
+      {
+        date: '2021-09-09T04:54:54.000Z',
+        product_id: 2,
+        quantity: 2
+      }
+    ]     
+
+    before(() => {
+      request.params = {
+        id: 1,
+      }
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesService, 'deleteSale').resolves(mock);
+    });
+
+    after(() => {
+      salesService.deleteSale.restore();
+    });
+
+    it('é chamado o status com o código 200', async () => {
+       await salesController.deleteById(request, response)
+      expect(response.status.calledWith(200)).to.be.equal(true);
+    });
+    it('é chamado o status com o código 200', async () => {
+      await salesController.deleteById(request, response)
+     expect(response.status.calledWith(200)).to.be.equal(true);
+   });
+  });
+
+  describe('deleteById quando da errado', async () => {
+    const response = {};
+    const request = {};
+    const mock =   [
+      { 
+        date: '2021-09-09T04:54:29.000Z',
+        product_id: 1,
+        quantity: 2
+      },
+      {
+        date: '2021-09-09T04:54:54.000Z',
+        product_id: 2,
+        quantity: 2
+      }
+    ]     
+
+    before(() => {
+      request.params = {
+        id: 1,
+      }
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesService, 'deleteSale').resolves([]);
+    });
+
+    after(() => {
+      salesService.deleteSale.restore();
+    });
+
+    it('é chamado o status com o código 404', async () => {
+       await salesController.deleteById(request, response)
+      expect(response.status.calledWith(404)).to.be.equal(true);
+    });
+    it('é chamado o status com o código 404', async () => {
+      await salesController.deleteById(request, response)
+     expect(response.status.calledWith(404)).to.be.equal(true);
+   });
+  });
+
+  describe('create', async () => {
+    const response = {};
+    const request = {};
+    const mock = {
+      id: 1,
+      itemsSold: [
+        {
+          product_id: 1,
+          quantity: 3
+        }
+      ]
+    }     
+
+    before(() => {
+      request.body = [
+        {
+          product_id: 1,
+          quantity: 30,
+        }
+      ]
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(salesService, 'createSale').resolves(mock);
+    });
+
+    after(() => {
+      salesService.createSale.restore();
+    });
+
+    it('é chamado o status com o código 201', async () => {
+       await salesController.create(request, response)
+      expect(response.status.calledWith(201)).to.be.equal(true);
+    });
+    it('é chamado o status com o código 201', async () => {
+      await salesController.create(request, response)
+     expect(response.status.calledWith(201)).to.be.equal(true);
+   });
+  });
+
+  describe('updateById', async () => {
     const response = {};
     const request = {};
     const mock = {
@@ -216,29 +416,37 @@ describe('SALES', () => {
           quantity: 6
         }
       ]
-    }    
+    }   
 
     before(() => {
-      request.params = {
-        id: 1,
-      }
+      request.params = 
+        {
+          id: 1,
+        }
+      request.body = [
+        {
+          product_id: 1,
+          quantity: 6
+        }
+      ]
+      
 
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
-      sinon.stub(salesService, 'getById').resolves(mock);
+      sinon.stub(salesService, 'updateById').resolves(mock);
     });
 
     after(() => {
-      salesService.getById.restore();
+      salesService.updateById.restore();
     });
 
-    it('é chamado o status com o código 201', async () => {
-       await salesController.getById(request, response)
+    it('é chamado o status com o código 200', async () => {
+       await salesController.updateById(request, response)
       expect(response.status.calledWith(200)).to.be.equal(true);
     });
-    it('é chamado o status com o código 201', async () => {
-      await salesController.getById(request, response)
+    it('é chamado o status com o código 200', async () => {
+      await salesController.updateById(request, response)
      expect(response.status.calledWith(200)).to.be.equal(true);
    });
   });
