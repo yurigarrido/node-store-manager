@@ -4,6 +4,9 @@ const { expect } = require('chai');
 const productsService = require('../../services/productsService')
 const productsController = require('../../controllers/productsController');
 
+const salesController = require('../../controllers/salesController');
+const salesService = require('../../services/salesService');
+
 describe('Ao chamar o controller de criar produto', () => {
   describe('quando é inserido com sucesso', async () => {
     const response = {};
@@ -150,6 +153,52 @@ describe('Ao chamar o controller de remover produto', () => {
       await productsController.deleteProdcut(request, response);
 
       expect(response.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
+
+// salesController -------------------------------------
+
+
+describe('Ao chamar o controller de criar venda', () => {
+  describe('quando é inserido com sucesso', async () => {
+    const response = {};
+    const request = {};
+
+    before(() => {
+      request.body = {
+        product_id: 1,
+        quantity: 3
+      }
+
+      response.status = sinon.stub().returns(response);
+      response.send = sinon.stub().returns();
+
+
+      const mock = {
+        id: 1,
+        itemsSold: [
+          {
+            product_id: 1,
+            quantity: 2
+          },
+          {
+            product_id: 2,
+            quantity: 5
+          }
+        ]
+      } 
+      sinon.stub(salesService, 'getAll').resolves(true);
+    });
+
+    after(() => {
+      salesService.getAll.restore();
+    });
+
+    it('é chamado o status com o código 201', async () => {
+      await salesController.getAll(request, response);
+
+      expect(response.status.calledWith(201)).to.be.equal(true);
     });
   });
 });

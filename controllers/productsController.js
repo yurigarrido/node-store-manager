@@ -1,9 +1,3 @@
-const express = require('express');
-const rescue = require('express-rescue');
-
-const router = express.Router();
-
-const middleware = require('../middlewares/validateProducts');
 const service = require('../services/productsService');
 
 /**

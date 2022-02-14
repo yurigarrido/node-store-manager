@@ -1,28 +1,23 @@
-const express = require('express');
-
-const router = express.Router();
-
 const service = require('../services/salesService');
-const { validateUndefined, validateQuantity /* stockValid */ } = require('../middlewares/validateSales');
 
-router.post('/', validateUndefined, validateQuantity, /* stockValid */ async (req, res) => {
+const create = async (req, res, _next) => {
   const response = await service.createSale(req.body);
   return res.status(201).json(response);
-});
+};
 
-router.put('/:id', validateUndefined, validateQuantity, async (req, res) => {
+const updateById = async (req, res, _next) => {
   const { id } = req.params;
   const response = await service.updateById(id, req.body[0]);
   res.status(200).json(response);
-});
+};
 
-router.get('/', async (_req, res) => {
+const getAll = async (_req, res, _next) => {
   const response = await service.getAll();
 
   return res.status(200).json(response);
-});
+};
 
-router.get('/:id', async (req, res) => {
+const getById = async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await service.getById(id);
@@ -32,9 +27,9 @@ router.get('/:id', async (req, res) => {
   }
 
   res.status(200).json(response);
-});
+};
 
-router.delete('/:id', async (req, res) => {
+const deleteById = async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await service.deleteSale(id);
@@ -42,6 +37,12 @@ router.delete('/:id', async (req, res) => {
   if (response.length === 0) return res.status(404).json({ message: 'Sale not found' });
 
   res.status(200).json(response);
-});
+};
 
-module.exports = router;
+module.exports = { 
+  getAll,
+  getById,
+  create,
+  deleteById,
+  updateById,
+};
